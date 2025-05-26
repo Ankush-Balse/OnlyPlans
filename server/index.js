@@ -16,6 +16,7 @@ import formRoutes from "./routes/forms.js";
 import volunteersRoutes from "./routes/volunteers.js";
 import contactRoutes from "./routes/contact.js";
 import adminRoutes from "./routes/admin.js";
+import healthRouter from "./routes/health.js";
 
 // Middleware imports
 import { errorHandler } from "./middleware/errorMiddleware.js";
@@ -50,6 +51,9 @@ app.use(
 		credentials: true,
 	})
 );
+
+// Is server healthy
+app.use("/api/health", healthRouter);
 
 // Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
