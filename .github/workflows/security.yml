@@ -1,42 +1,51 @@
 name: Security Scan
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
-  schedule:
-    - cron: '0 0 * * 0'  # Run weekly
+    push:
+        branches: [main, develop]
+    pull_request:
+        branches: [main, develop]
+    schedule:
+        - cron: "0 0 * * 0" # Run weekly
 
 jobs:
-  security:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v3
+    security:
+        runs-on: ubuntu-latest
 
-    - name: Run Snyk to check for vulnerabilities
-      uses: snyk/actions/node@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        args: --severity-threshold=high
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
 
-    - name: Run SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "18" # or your preferred version
 
-    - name: Run npm audit
-      run: |
-        npm audit
-        cd client && npm audit
+            - name: Install dependencies
+              run: npm install # This is critical
 
-    - name: Run CodeQL Analysis
-      uses: github/codeql-action/init@v2
-      with:
-        languages: javascript
+            - name: Run Snyk to check for vulnerabilities
+              uses: snyk/actions/node@master
+              env:
+                  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+              with:
+                  args: --severity-threshold=high
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2 
+            - name: Run SonarCloud Scan
+              uses: SonarSource/sonarcloud-github-action@master
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+            - name: Run npm audit
+              run: |
+                  npm audit
+                  cd client && npm audit
+
+            - name: Run CodeQL Analysis
+              uses: github/codeql-action/init@v2
+              with:
+                  languages: javascript
+
+            - name: Perform CodeQL Analysis
+              uses: github/codeql-action/analyze@v2
