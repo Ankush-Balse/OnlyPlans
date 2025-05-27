@@ -23,10 +23,8 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   cache: "npm"
 
-            - name: Install dependencies
-              run: |
-                  npm ci
-                  cd client && npm ci
+            - name: Install root dependencies
+              run: npm ci
 
             - name: Run OWASP dependency check
               uses: dependency-check/Dependency-Check_Action@main
@@ -47,10 +45,8 @@ jobs:
               env:
                   CI: true
 
-            - name: Build application
-              run: |
-                  npm run build
-                  cd client && npm run build
+            - name: Build frontend
+              run: npm run build:client
 
             - name: Upload dependency check report
               uses: actions/upload-artifact@v4
@@ -58,10 +54,8 @@ jobs:
                   name: dependency-check-report
                   path: reports
 
-            - name: Upload build artifacts
+            - name: Upload frontend build artifacts
               uses: actions/upload-artifact@v4
               with:
-                  name: build
-                  path: |
-                      build
-                      client/build
+                  name: client-dist
+                  path: dist
