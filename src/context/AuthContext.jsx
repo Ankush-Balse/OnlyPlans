@@ -21,11 +21,7 @@ export const AuthProvider = ({ children }) => {
 	const checkUser = async () => {
 		try {
 			const { data } = await axios.get("/api/auth/me");
-			console.log("user", data);
-			setUser((cur) => {
-				return data.data;
-			});
-			console.log("user", data);
+			setUser(data.data);
 		} catch (error) {
 			setUser(null);
 		} finally {
@@ -64,6 +60,7 @@ export const AuthProvider = ({ children }) => {
 		try {
 			await axios.get("/api/auth/logout");
 			setUser(null);
+			localStorage.removeItem("token");
 			toast.success("Logged out successfully");
 			navigate("/login");
 		} catch (error) {
