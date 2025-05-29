@@ -34,7 +34,7 @@ import EventAnalytics from "./pages/admin/EventAnalyticsPage";
 import EventsManagementPage from "./pages/admin/EventsManagementPage";
 import AssignVolunteersPage from "./pages/admin/AssignVolunteersPage";
 
-// Volunteer Pages
+// Volunteer Pages.
 import VolunteerDashboard from "./pages/volunteer/DashboardPage";
 import FormBuilder from "./pages/volunteer/FormBuilderPage";
 import EventRegistrations from "./pages/volunteer/EventRegistrationsPage";
