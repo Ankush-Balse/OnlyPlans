@@ -6,6 +6,7 @@ import AdminRoute from "./components/AdminRoute";
 import VolunteerRoute from "./components/VolunteerRoute";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import PrivateRoute from "./components/PrivateRoute";
 
 // Public Pages
 import Home from "./pages/HomePage";
