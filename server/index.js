@@ -67,16 +67,16 @@ app.use("/api/volunteers", volunteersRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/admin", adminRoutes);
 
-// Serve static assets if in production
-if (process.env.NODE_ENV === "production") {
-	// Set static folder
-	app.use(express.static(path.join(__dirname, "../dist")));
+// // Serve static assets if in production
+// if (process.env.NODE_ENV === "production") {
+// 	// Set static folder
+// 	app.use(express.static(path.join(__dirname, "../dist")));
 
-	// Any route that doesn't match API routes will load the React app
-	app.get("*", (req, res) => {
-		res.sendFile(path.join(__dirname, "../dist/index.html"));
-	});
-}
+// 	// Any route that doesn't match API routes will load the React app
+// 	app.get("*", (req, res) => {
+// 		res.sendFile(path.join(__dirname, "../dist/index.html"));
+// 	});
+// }
 
 // Error handling middleware
 app.use(errorHandler);
