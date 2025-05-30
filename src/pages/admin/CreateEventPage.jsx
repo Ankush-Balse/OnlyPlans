@@ -4,6 +4,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import EventForm from "../../components/EventForm";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const CreateEventPage = () => {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
@@ -11,11 +13,15 @@ const CreateEventPage = () => {
 	const handleSubmit = async (formData) => {
 		setLoading(true);
 		try {
-			const { data } = await axios.post("/api/events", formData, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			});
+			const { data } = await axios.post(
+				`${baseUrl}/api/events`,
+				formData,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
 			toast.success("Event created successfully");
 			navigate(`/events/${data.data._id}`);
 		} catch (error) {

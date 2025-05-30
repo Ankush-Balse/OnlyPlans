@@ -15,6 +15,8 @@ import axios from "axios";
 import Chart from "chart.js/auto";
 import { Line, Bar, Doughnut } from "react-chartjs-2";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 // Mock data (would be fetched from API)
 const mockData = {
 	stats: {
@@ -68,9 +70,11 @@ const DashboardPage = () => {
 		const fetchDashboardData = async () => {
 			setIsLoading(true);
 			try {
-				const statsResponse = await axios.get("/api/admin/stats");
+				const statsResponse = await axios.get(
+					`${baseUrl}/api/admin/stats`
+				);
 				const eventsResponse = await axios.get(
-					"/api/admin/recent-events"
+					`${baseUrl}/api/admin/recent-events`
 				);
 
 				setStats(statsResponse.data.data);

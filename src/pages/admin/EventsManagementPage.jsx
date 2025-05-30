@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import { Menu } from "@headlessui/react";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const EventsManagementPage = () => {
 	const [events, setEvents] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -27,7 +29,7 @@ const EventsManagementPage = () => {
 	const fetchEvents = async () => {
 		setLoading(true);
 		try {
-			const { data } = await axios.get("/api/events", {
+			const { data } = await axios.get(`${baseUrl}/api/events`, {
 				params: {
 					search: searchQuery,
 					status: selectedStatus,
@@ -58,7 +60,7 @@ const EventsManagementPage = () => {
 		}
 
 		try {
-			await axios.delete(`/api/events/${eventId}`);
+			await axios.delete(`${baseUrl}/api/events/${eventId}`);
 			toast.success("Event deleted successfully");
 			fetchEvents();
 		} catch (error) {
@@ -68,7 +70,7 @@ const EventsManagementPage = () => {
 
 	const handleStatusChange = async (eventId, newStatus) => {
 		try {
-			await axios.patch(`/api/events/${eventId}/status`, {
+			await axios.patch(`${baseUrl}/api/events/${eventId}/status`, {
 				status: newStatus,
 			});
 			toast.success("Event status updated successfully");
@@ -174,32 +176,55 @@ const EventsManagementPage = () => {
 					<table className="w-full">
 						<thead className="bg-gray-800/50">
 							<tr>
-								<th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+								<th
+									scope="col"
+									className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+								>
 									Event
 								</th>
-								<th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+								<th
+									scope="col"
+									className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+								>
 									Date
 								</th>
-								<th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+								<th
+									scope="col"
+									className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+								>
 									Status
 								</th>
-								<th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+								<th
+									scope="col"
+									className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+								>
 									Registrations
 								</th>
-								<th scope="col" className="px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
+								<th
+									scope="col"
+									className="px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider"
+								>
 									Actions
 								</th>
 							</tr>
 						</thead>
 						<tbody className="divide-y divide-gray-800">
 							{events.map((event) => (
-								<tr key={event._id} className="bg-gray-900 hover:bg-gray-800/50">
+								<tr
+									key={event._id}
+									className="bg-gray-900 hover:bg-gray-800/50"
+								>
 									<td className="px-6 py-4 whitespace-nowrap">
 										<div className="flex items-center">
 											<div className="h-10 w-10 flex-shrink-0">
 												<img
 													className="h-10 w-10 rounded-lg object-cover"
-													src={event.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(event.title)}&background=random`}
+													src={
+														event.image ||
+														`https://ui-avatars.com/api/?name=${encodeURIComponent(
+															event.title
+														)}&background=random`
+													}
 													alt={event.title}
 												/>
 											</div>
@@ -214,26 +239,35 @@ const EventsManagementPage = () => {
 										</div>
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-										{new Date(event.date).toLocaleDateString()}
+										{new Date(
+											event.date
+										).toLocaleDateString()}
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap">
-										<span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-											event.status === "published"
-												? "bg-green-100 text-green-800"
-												: event.status === "draft"
-												? "bg-yellow-100 text-yellow-800"
-												: event.status === "cancelled"
-												? "bg-red-100 text-red-800"
-												: "bg-gray-100 text-gray-800"
-										}`}>
+										<span
+											className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+												event.status === "published"
+													? "bg-green-100 text-green-800"
+													: event.status === "draft"
+													? "bg-yellow-100 text-yellow-800"
+													: event.status ===
+													  "cancelled"
+													? "bg-red-100 text-red-800"
+													: "bg-gray-100 text-gray-800"
+											}`}
+										>
 											{event.status}
 										</span>
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-										{event.registrations?.length || 0} / {event.maxAttendees || "∞"}
+										{event.registrations?.length || 0} /{" "}
+										{event.maxAttendees || "∞"}
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-										<Menu as="div" className="relative inline-block text-left">
+										<Menu
+											as="div"
+											className="relative inline-block text-left"
+										>
 											<div>
 												<Menu.Button className="inline-flex items-center p-2 border border-gray-700 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-primary-500">
 													<MoreVertical className="h-5 w-5 text-gray-400" />
@@ -246,7 +280,9 @@ const EventsManagementPage = () => {
 															<Link
 																to={`/events/${event._id}`}
 																className={`${
-																	active ? "bg-gray-700" : ""
+																	active
+																		? "bg-gray-700"
+																		: ""
 																} flex items-center px-4 py-2 text-sm text-gray-300 hover:text-white`}
 															>
 																<Eye className="h-4 w-4 mr-2" />
@@ -259,7 +295,9 @@ const EventsManagementPage = () => {
 															<Link
 																to={`/admin/events/${event._id}/edit`}
 																className={`${
-																	active ? "bg-gray-700" : ""
+																	active
+																		? "bg-gray-700"
+																		: ""
 																} flex items-center px-4 py-2 text-sm text-gray-300 hover:text-white`}
 															>
 																<Edit2 className="h-4 w-4 mr-2" />
@@ -272,23 +310,34 @@ const EventsManagementPage = () => {
 															<Link
 																to={`/admin/events/${event._id}/volunteers`}
 																className={`${
-																	active ? "bg-gray-700" : ""
+																	active
+																		? "bg-gray-700"
+																		: ""
 																} flex items-center px-4 py-2 text-sm text-gray-300 hover:text-white`}
 															>
 																<UserPlus className="h-4 w-4 mr-2" />
-																Assign Volunteers
+																Assign
+																Volunteers
 															</Link>
 														)}
 													</Menu.Item>
 												</div>
 												<div className="py-1">
-													{event.status === "draft" && (
+													{event.status ===
+														"draft" && (
 														<Menu.Item>
 															{({ active }) => (
 																<button
-																	onClick={() => handleStatusChange(event._id, "published")}
+																	onClick={() =>
+																		handleStatusChange(
+																			event._id,
+																			"published"
+																		)
+																	}
 																	className={`${
-																		active ? "bg-gray-700" : ""
+																		active
+																			? "bg-gray-700"
+																			: ""
 																	} flex items-center px-4 py-2 text-sm text-gray-300 hover:text-white w-full text-left`}
 																>
 																	<CheckCircle className="h-4 w-4 mr-2" />
@@ -297,17 +346,26 @@ const EventsManagementPage = () => {
 															)}
 														</Menu.Item>
 													)}
-													{event.status === "published" && (
+													{event.status ===
+														"published" && (
 														<Menu.Item>
 															{({ active }) => (
 																<button
-																	onClick={() => handleStatusChange(event._id, "completed")}
+																	onClick={() =>
+																		handleStatusChange(
+																			event._id,
+																			"completed"
+																		)
+																	}
 																	className={`${
-																		active ? "bg-gray-700" : ""
+																		active
+																			? "bg-gray-700"
+																			: ""
 																	} flex items-center px-4 py-2 text-sm text-gray-300 hover:text-white w-full text-left`}
 																>
 																	<CheckCircle className="h-4 w-4 mr-2" />
-																	Mark as Completed
+																	Mark as
+																	Completed
 																</button>
 															)}
 														</Menu.Item>
@@ -315,9 +373,15 @@ const EventsManagementPage = () => {
 													<Menu.Item>
 														{({ active }) => (
 															<button
-																onClick={() => handleDeleteEvent(event._id)}
+																onClick={() =>
+																	handleDeleteEvent(
+																		event._id
+																	)
+																}
 																className={`${
-																	active ? "bg-gray-700" : ""
+																	active
+																		? "bg-gray-700"
+																		: ""
 																} flex items-center px-4 py-2 text-sm text-red-400 hover:text-red-300 w-full text-left`}
 															>
 																<Trash2 className="h-4 w-4 mr-2" />

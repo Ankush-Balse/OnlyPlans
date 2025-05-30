@@ -14,6 +14,8 @@ import {
 	AlertCircle,
 } from "lucide-react";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const DashboardPage = () => {
 	const { user, isVolunteer } = useAuth();
 	const [loading, setLoading] = useState(true);
@@ -33,9 +35,11 @@ const DashboardPage = () => {
 			try {
 				const [dashboardRes, eventsRes] = await Promise.all([
 					axios.get(
-						`/api/volunteers/${user._id || user.id}/dashboard`
+						`${baseUrl}/api/volunteers/${
+							user._id || user.id
+						}/dashboard`
 					),
-					axios.get("/api/events", {
+					axios.get(`${baseUrl}/api/events`, {
 						params: {
 							type: "volunteering",
 						},

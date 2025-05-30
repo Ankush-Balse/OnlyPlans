@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -20,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
 	const checkUser = async () => {
 		try {
-			const { data } = await axios.get("/api/auth/me");
+			const { data } = await axios.get(`${baseUrl}/api/auth/me`);
 			setUser(data.data);
 		} catch (error) {
 			setUser(null);
@@ -31,7 +33,10 @@ export const AuthProvider = ({ children }) => {
 
 	const register = async (userData) => {
 		try {
-			const { data } = await axios.post("/api/auth/register", userData);
+			const { data } = await axios.post(
+				`${baseUrl}api/auth/register`,
+				userData
+			);
 			setUser(data.user);
 			toast.success("Registration successful!");
 			navigate("/");
@@ -44,7 +49,10 @@ export const AuthProvider = ({ children }) => {
 
 	const login = async (credentials) => {
 		try {
-			const { data } = await axios.post("/api/auth/login", credentials);
+			const { data } = await axios.post(
+				`${baseUrl}api/auth/login`,
+				credentials
+			);
 			setUser(data.user);
 			localStorage.setItem("token", data.token);
 			toast.success("Login successful!");
@@ -58,7 +66,7 @@ export const AuthProvider = ({ children }) => {
 
 	const logout = async () => {
 		try {
-			await axios.get("/api/auth/logout");
+			await axios.get(`${baseUrl}api/auth/logout`);
 			setUser(null);
 			localStorage.removeItem("token");
 			toast.success("Logged out successfully");
@@ -79,7 +87,10 @@ export const AuthProvider = ({ children }) => {
 					.map(([key]) => key);
 			}
 
-			const { data } = await axios.put(`/api/users/${userId}`, userData);
+			const { data } = await axios.put(
+				`${baseUrl}/api/users/${userId}`,
+				userData
+			);
 			setUser(data.data);
 			toast.success("Profile updated successfully");
 			return true;
@@ -97,7 +108,7 @@ export const AuthProvider = ({ children }) => {
 			formData.append("profilePicture", file);
 
 			const { data } = await axios.put(
-				`/api/users/${userId}/profile-picture`,
+				`${baseUrl}/api/users/${userId}/profile-picture`,
 				formData,
 				{
 					headers: {
@@ -121,7 +132,7 @@ export const AuthProvider = ({ children }) => {
 	const getUserEvents = async (userId) => {
 		try {
 			const [registeredResponse, managedResponse] = await Promise.all([
-				axios.get("/api/events", {
+				axios.get(`${baseUrl}/api/events`, {
 					params: { type: "registered" },
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem(
@@ -129,7 +140,7 @@ export const AuthProvider = ({ children }) => {
 						)}`,
 					},
 				}),
-				axios.get("/api/events", {
+				axios.get(`${baseUrl}/api/events`, {
 					params: { type: "managed" },
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem(

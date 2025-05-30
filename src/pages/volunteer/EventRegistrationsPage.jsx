@@ -5,6 +5,8 @@ import axios from "axios";
 import { Check, X, Search, Filter } from "lucide-react";
 import { toast } from "react-hot-toast";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const EventRegistrationsPage = () => {
 	const { user, isVolunteer } = useAuth();
 	const { eventId } = useParams();
@@ -17,7 +19,7 @@ const EventRegistrationsPage = () => {
 		const fetchRegistrations = async () => {
 			try {
 				const response = await axios.get(
-					`/api/events/${eventId}/registrations`,
+					`${baseUrl}/api/events/${eventId}/registrations`,
 					{
 						user,
 					}
@@ -38,7 +40,7 @@ const EventRegistrationsPage = () => {
 
 	const handleStatusChange = async (registrationId, newStatus) => {
 		try {
-			await axios.put(`/api/registrations/${registrationId}`, {
+			await axios.put(`${baseUrl}/api/registrations/${registrationId}`, {
 				status: newStatus,
 			});
 

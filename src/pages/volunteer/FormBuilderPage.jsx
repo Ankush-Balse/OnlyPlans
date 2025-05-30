@@ -66,7 +66,7 @@ const FormBuilderPage = () => {
 					// Try to get existing form
 					try {
 						const formResponse = await axios.get(
-							`/api/forms/event/${eventId}`
+							`${baseUrl}/api/forms/event/${eventId}`
 						);
 						setFormTitle(formResponse.data.data.title);
 						setFormDescription(formResponse.data.data.description);
@@ -220,10 +220,10 @@ const FormBuilderPage = () => {
 
 			if (event.status === "draft") {
 				// Create new form
-				await axios.post("/api/forms", formData);
+				await axios.post(`${baseUrl}/api/forms`, formData);
 			} else {
 				// Update existing form
-				await axios.put(`/api/forms/${event._id}`, formData);
+				await axios.put(`${baseUrl}/api/forms/${event._id}`, formData);
 			}
 
 			toast.success("Form saved successfully");
@@ -235,7 +235,7 @@ const FormBuilderPage = () => {
 	};
 
 	const exportResponses = async () => {
-		window.location.href = `/api/forms/${event._id}/export`;
+		window.location.href = `${baseUrl}/api/forms/${event._id}/export`;
 		toast.success("Export started. The file will download shortly.");
 	};
 

@@ -14,6 +14,8 @@ import { useAuth } from "../context/AuthContext.jsx";
 import toast from "react-hot-toast";
 import axios from "axios";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const EventDetailsPage = () => {
 	const { id } = useParams();
 	const { user } = useAuth();
@@ -31,11 +33,11 @@ const EventDetailsPage = () => {
 		const fetchEvent = async () => {
 			setIsLoading(true);
 			try {
-				const response = await axios.get(`/api/events/${id}`);
+				const response = await axios.get(`${baseUrl}/api/events/${id}`);
 				setEvent(response.data.data);
 				if (response.data.data.status === "published") {
 					const formResponse = await axios.get(
-						`/api/forms/event/${id}`
+						`${baseUrl}/api/forms/event/${id}`
 					);
 					setEvent({
 						...event,
@@ -77,7 +79,7 @@ const EventDetailsPage = () => {
 
 		try {
 			const response = await axios.post(
-				`/api/events/${id}/register`,
+				`${baseUrl}/api/events/${id}/register`,
 				{ formData },
 				{
 					headers: {
@@ -141,30 +143,30 @@ const EventDetailsPage = () => {
 		const handleFileChange = async (field, e) => {
 			const file = e.target.files[0];
 			if (file) {
-				setFileUploads(prev => ({
+				setFileUploads((prev) => ({
 					...prev,
-					[field]: file
+					[field]: file,
 				}));
 				// Store the file name in localFormData
-				setLocalFormData(prev => ({
+				setLocalFormData((prev) => ({
 					...prev,
-					[field]: file.name
+					[field]: file.name,
 				}));
 			}
 		};
 
 		const handleCheckboxChange = (field, value, isChecked) => {
-			setLocalFormData(prev => {
+			setLocalFormData((prev) => {
 				const currentValues = prev[field] || [];
 				if (isChecked) {
 					return {
 						...prev,
-						[field]: [...currentValues, value]
+						[field]: [...currentValues, value],
 					};
 				} else {
 					return {
 						...prev,
-						[field]: currentValues.filter(v => v !== value)
+						[field]: currentValues.filter((v) => v !== value),
 					};
 				}
 			});
@@ -172,22 +174,25 @@ const EventDetailsPage = () => {
 
 		const handleSubmit = async (e) => {
 			e.preventDefault();
-			
+
 			// Create FormData to handle file uploads
 			const formDataToSubmit = new FormData();
-			
+
 			// Add regular form data
-			Object.keys(localFormData).forEach(key => {
+			Object.keys(localFormData).forEach((key) => {
 				if (Array.isArray(localFormData[key])) {
 					// Handle arrays (like checkbox groups)
-					formDataToSubmit.append(key, JSON.stringify(localFormData[key]));
+					formDataToSubmit.append(
+						key,
+						JSON.stringify(localFormData[key])
+					);
 				} else {
 					formDataToSubmit.append(key, localFormData[key]);
 				}
 			});
 
 			// Add file uploads
-			Object.keys(fileUploads).forEach(key => {
+			Object.keys(fileUploads).forEach((key) => {
 				formDataToSubmit.append(key, fileUploads[key]);
 			});
 
@@ -209,7 +214,12 @@ const EventDetailsPage = () => {
 						<input
 							type={field.type}
 							value={localFormData[field.label] || ""}
-							onChange={(e) => handleLocalInputChange(field.label, e.target.value)}
+							onChange={(e) =>
+								handleLocalInputChange(
+									field.label,
+									e.target.value
+								)
+							}
 							placeholder={field.placeholder}
 							className="input"
 							required={field.required}
@@ -220,7 +230,12 @@ const EventDetailsPage = () => {
 					return (
 						<textarea
 							value={localFormData[field.label] || ""}
-							onChange={(e) => handleLocalInputChange(field.label, e.target.value)}
+							onChange={(e) =>
+								handleLocalInputChange(
+									field.label,
+									e.target.value
+								)
+							}
 							placeholder={field.placeholder}
 							className="input"
 							required={field.required}
@@ -232,11 +247,18 @@ const EventDetailsPage = () => {
 					return (
 						<select
 							value={localFormData[field.label] || ""}
-							onChange={(e) => handleLocalInputChange(field.label, e.target.value)}
+							onChange={(e) =>
+								handleLocalInputChange(
+									field.label,
+									e.target.value
+								)
+							}
 							className="input"
 							required={field.required}
 						>
-							<option value="">{field.placeholder || "Select an option"}</option>
+							<option value="">
+								{field.placeholder || "Select an option"}
+							</option>
 							{field.options.map((option, optIndex) => (
 								<option key={optIndex} value={option.value}>
 									{option.label}
@@ -249,16 +271,29 @@ const EventDetailsPage = () => {
 					return (
 						<div className="space-y-2">
 							{field.options.map((option, optIndex) => (
-								<div key={optIndex} className="flex items-center">
+								<div
+									key={optIndex}
+									className="flex items-center"
+								>
 									<input
 										type="radio"
 										id={`${field.label}-${option.value}`}
 										name={field.label}
 										value={option.value}
-										checked={localFormData[field.label] === option.value}
-										onChange={(e) => handleLocalInputChange(field.label, e.target.value)}
+										checked={
+											localFormData[field.label] ===
+											option.value
+										}
+										onChange={(e) =>
+											handleLocalInputChange(
+												field.label,
+												e.target.value
+											)
+										}
 										className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-700 dark:bg-dark-700"
-										required={field.required && optIndex === 0}
+										required={
+											field.required && optIndex === 0
+										}
 									/>
 									<label
 										htmlFor={`${field.label}-${option.value}`}
@@ -275,13 +310,26 @@ const EventDetailsPage = () => {
 					return (
 						<div className="space-y-2">
 							{field.options.map((option, optIndex) => (
-								<div key={optIndex} className="flex items-center">
+								<div
+									key={optIndex}
+									className="flex items-center"
+								>
 									<input
 										type="checkbox"
 										id={`${field.label}-${option.value}`}
 										value={option.value}
-										checked={localFormData[field.label]?.includes(option.value) || false}
-										onChange={(e) => handleCheckboxChange(field.label, option.value, e.target.checked)}
+										checked={
+											localFormData[
+												field.label
+											]?.includes(option.value) || false
+										}
+										onChange={(e) =>
+											handleCheckboxChange(
+												field.label,
+												option.value,
+												e.target.checked
+											)
+										}
 										className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-700 dark:bg-dark-700"
 									/>
 									<label
@@ -300,7 +348,9 @@ const EventDetailsPage = () => {
 						<div>
 							<input
 								type="file"
-								onChange={(e) => handleFileChange(field.label, e)}
+								onChange={(e) =>
+									handleFileChange(field.label, e)
+								}
 								className="block w-full text-sm text-gray-500 dark:text-gray-400
 									file:mr-4 file:py-2 file:px-4
 									file:rounded-md file:border-0
@@ -312,7 +362,8 @@ const EventDetailsPage = () => {
 							/>
 							{fileUploads[field.label] && (
 								<p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-									Selected file: {fileUploads[field.label].name}
+									Selected file:{" "}
+									{fileUploads[field.label].name}
 								</p>
 							)}
 						</div>

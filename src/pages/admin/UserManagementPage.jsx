@@ -3,6 +3,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Users, Edit, Trash2, CheckCircle, XCircle } from "lucide-react";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const UserManagementPage = () => {
 	const [users, setUsers] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -14,7 +16,7 @@ const UserManagementPage = () => {
 
 	const fetchUsers = async () => {
 		try {
-			const { data } = await axios.get("/api/users");
+			const { data } = await axios.get(`${baseUrl}/api/users`);
 			setUsers(data.data || []);
 		} catch (error) {
 			toast.error("Failed to fetch users");
@@ -25,7 +27,9 @@ const UserManagementPage = () => {
 
 	const handleRoleChange = async (userId, newRole) => {
 		try {
-			await axios.put(`/api/users/${userId}/role`, { role: newRole });
+			await axios.put(`${baseUrl}/api/users/${userId}/role`, {
+				role: newRole,
+			});
 			toast.success("User role updated successfully");
 			fetchUsers();
 		} catch (error) {
@@ -38,7 +42,7 @@ const UserManagementPage = () => {
 			return;
 
 		try {
-			await axios.delete(`/api/users/${userId}`);
+			await axios.delete(`${baseUrl}/api/users/${userId}`);
 			toast.success("User deleted successfully");
 			fetchUsers();
 		} catch (error) {

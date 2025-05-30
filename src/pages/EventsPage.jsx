@@ -7,86 +7,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { MapPin } from "lucide-react";
 
-const MOCK_EVENTS = [
-	{
-		_id: "1",
-		title: "Annual Developer Conference 2025",
-		description:
-			"Join us for the biggest tech conference of the year with workshops, networking, and keynotes.",
-		image: "https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		date: "2025-06-15",
-		location: "San Francisco, CA",
-		attendeeCount: 1200,
-		category: "Technology",
-		duration: "3 days",
-		tags: ["Coding", "Networking", "Workshop"],
-	},
-	{
-		_id: "2",
-		title: "Summer Music Festival",
-		description:
-			"Three days of amazing performances, food, and fun for music lovers of all genres.",
-		image: "https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		date: "2025-08-05",
-		location: "Los Angeles, CA",
-		attendeeCount: 5000,
-		category: "Music",
-		duration: "3 days",
-		tags: ["Live Music", "Festival", "Entertainment"],
-	},
-	{
-		_id: "3",
-		title: "Charity 5K Run",
-		description:
-			"Run for a cause in our annual charity event to raise funds for children's education.",
-		image: "https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		date: "2025-09-12",
-		location: "New York, NY",
-		attendeeCount: 850,
-		category: "Charity",
-		duration: "1 day",
-		tags: ["Charity", "Sports", "Running"],
-	},
-	{
-		_id: "4",
-		title: "Business Leadership Summit",
-		description:
-			"Connect with top business leaders and learn strategies for success in today's market.",
-		image: "https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		date: "2025-07-22",
-		location: "Chicago, IL",
-		attendeeCount: 300,
-		category: "Business",
-		duration: "2 days",
-		tags: ["Networking", "Leadership", "Business"],
-	},
-	{
-		_id: "5",
-		title: "Art Exhibition: Modern Perspectives",
-		description:
-			"Explore contemporary art from emerging and established artists in this special exhibition.",
-		image: "https://images.pexels.com/photos/1509534/pexels-photo-1509534.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		date: "2025-10-05",
-		location: "Miami, FL",
-		attendeeCount: 450,
-		category: "Art",
-		duration: "2 weeks",
-		tags: ["Art", "Exhibition", "Culture"],
-	},
-	{
-		_id: "6",
-		title: "Food and Wine Festival",
-		description:
-			"Sample delicious cuisine and fine wines from renowned chefs and wineries.",
-		image: "https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		date: "2025-08-18",
-		location: "Napa Valley, CA",
-		attendeeCount: 1200,
-		category: "Food",
-		duration: "3 days",
-		tags: ["Food", "Wine", "Culinary"],
-	},
-];
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const categories = [
 	"Technology",
@@ -115,7 +36,7 @@ const EventsPage = () => {
 		const fetchEvents = async () => {
 			setIsLoading(true);
 			try {
-				const response = await axios.get("/api/events", {
+				const response = await axios.get(`${baseUrl}/api/events`, {
 					// params: {
 					// 	search: searchQuery,
 					// 	category: selectedCategory,
@@ -127,13 +48,16 @@ const EventsPage = () => {
 
 				// If user is logged in, get recommended events
 				if (user?._id) {
-					const recommendedResponse = await axios.get("/api/events", {
-						params: {
-							userId: user._id || user.id,
-							recommended: true,
-							limit: 3,
-						},
-					});
+					const recommendedResponse = await axios.get(
+						`${baseUrl}/api/events`,
+						{
+							params: {
+								userId: user._id || user.id,
+								recommended: true,
+								limit: 3,
+							},
+						}
+					);
 					setRecommendedEvents(recommendedResponse.data.data);
 				}
 			} catch (error) {

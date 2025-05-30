@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import axios from "axios";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const ContactPage = () => {
 	const {
 		register,
@@ -14,7 +16,7 @@ const ContactPage = () => {
 
 	const onSubmit = async (data) => {
 		try {
-			await axios.post("/api/contact", data);
+			await axios.post(`${baseUrl}/api/contact`, data);
 
 			// await new Promise(resolve => setTimeout(resolve, 1000));
 

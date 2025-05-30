@@ -4,6 +4,8 @@ import { Calendar, Users, Star, TrendingUp } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const EventAnalyticsPage = () => {
 	const [stats, setStats] = useState({
 		totalEvents: 0,
@@ -34,7 +36,9 @@ const EventAnalyticsPage = () => {
 
 	const fetchAnalytics = async () => {
 		try {
-			const response = await axios.get(`/api/admin/analytics?timeRange=${timeRange}`);
+			const response = await axios.get(
+				`${baseUrl}/api/admin/analytics?timeRange=${timeRange}`
+			);
 			const data = response.data.data;
 
 			setStats(data.stats);
@@ -48,7 +52,13 @@ const EventAnalyticsPage = () => {
 					data: data.categories.data,
 				},
 				ratings: {
-					labels: ["5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"],
+					labels: [
+						"5 Stars",
+						"4 Stars",
+						"3 Stars",
+						"2 Stars",
+						"1 Star",
+					],
 					data: data.ratings.data,
 				},
 			});
@@ -265,24 +275,32 @@ const EventAnalyticsPage = () => {
 									y: {
 										beginAtZero: true,
 										ticks: {
-											color: document.documentElement.classList.contains("dark")
+											color: document.documentElement.classList.contains(
+												"dark"
+											)
 												? "white"
 												: "black",
 										},
 										grid: {
-											color: document.documentElement.classList.contains("dark")
+											color: document.documentElement.classList.contains(
+												"dark"
+											)
 												? "rgba(255, 255, 255, 0.1)"
 												: "rgba(0, 0, 0, 0.1)",
 										},
 									},
 									x: {
 										ticks: {
-											color: document.documentElement.classList.contains("dark")
+											color: document.documentElement.classList.contains(
+												"dark"
+											)
 												? "white"
 												: "black",
 										},
 										grid: {
-											color: document.documentElement.classList.contains("dark")
+											color: document.documentElement.classList.contains(
+												"dark"
+											)
 												? "rgba(255, 255, 255, 0.1)"
 												: "rgba(0, 0, 0, 0.1)",
 										},
@@ -291,7 +309,9 @@ const EventAnalyticsPage = () => {
 								plugins: {
 									legend: {
 										labels: {
-											color: document.documentElement.classList.contains("dark")
+											color: document.documentElement.classList.contains(
+												"dark"
+											)
 												? "white"
 												: "black",
 										},
@@ -317,7 +337,9 @@ const EventAnalyticsPage = () => {
 									legend: {
 										position: "right",
 										labels: {
-											color: document.documentElement.classList.contains("dark")
+											color: document.documentElement.classList.contains(
+												"dark"
+											)
 												? "white"
 												: "black",
 										},
@@ -343,24 +365,32 @@ const EventAnalyticsPage = () => {
 									y: {
 										beginAtZero: true,
 										ticks: {
-											color: document.documentElement.classList.contains("dark")
+											color: document.documentElement.classList.contains(
+												"dark"
+											)
 												? "white"
 												: "black",
 										},
 										grid: {
-											color: document.documentElement.classList.contains("dark")
+											color: document.documentElement.classList.contains(
+												"dark"
+											)
 												? "rgba(255, 255, 255, 0.1)"
 												: "rgba(0, 0, 0, 0.1)",
 										},
 									},
 									x: {
 										ticks: {
-											color: document.documentElement.classList.contains("dark")
+											color: document.documentElement.classList.contains(
+												"dark"
+											)
 												? "white"
 												: "black",
 										},
 										grid: {
-											color: document.documentElement.classList.contains("dark")
+											color: document.documentElement.classList.contains(
+												"dark"
+											)
 												? "rgba(255, 255, 255, 0.1)"
 												: "rgba(0, 0, 0, 0.1)",
 										},
@@ -380,4 +410,4 @@ const EventAnalyticsPage = () => {
 	);
 };
 
-export default EventAnalyticsPage; 
+export default EventAnalyticsPage;
