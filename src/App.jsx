@@ -42,7 +42,6 @@ import EventRegistrations from "./pages/volunteer/EventRegistrationsPage";
 
 function App() {
 	return (
-		// <Router>
 		<ThemeProvider>
 			<AuthProvider>
 				<div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col text-gray-900 dark:text-gray-100 transition-colors">
@@ -196,7 +195,6 @@ function App() {
 				</div>
 			</AuthProvider>
 		</ThemeProvider>
-		// </Router>
 	);
 }
 
