@@ -59,7 +59,9 @@ const FormBuilderPage = () => {
 			setIsLoading(true);
 
 			try {
-				const eventResponse = await axios.get(`/api/events/${eventId}`);
+				const eventResponse = await axios.get(
+					`${baseUrl}/api/events/${eventId}`
+				);
 				setEvent(eventResponse.data.data);
 
 				if (eventId !== "new") {
