@@ -4,130 +4,314 @@
 	"title": "Node.js Application Metrics",
 	"timezone": "browser",
 	"schemaVersion": 36,
-	"version": 1,
-	"refresh": "10s",
+	"version": 3,
+	"refresh": "5s",
 	"panels": [
 		{
 			"type": "timeseries",
-			"title": "CPU Usage (Total)",
+			"title": "CPU Usage",
 			"targets": [
 				{
+					"expr": "process_cpu_user_seconds_total",
+					"legendFormat": "User CPU",
+					"refId": "A",
+					"instant": true,
+					"interval": "5s"
+				},
+				{
+					"expr": "process_cpu_system_seconds_total",
+					"legendFormat": "System CPU",
+					"refId": "B",
+					"instant": true,
+					"interval": "5s"
+				},
+				{
 					"expr": "process_cpu_seconds_total",
-					"legendFormat": "CPU Total",
+					"legendFormat": "Total CPU",
+					"refId": "C",
+					"instant": true,
+					"interval": "5s"
+				}
+			],
+			"gridPos": { "x": 0, "y": 0, "w": 12, "h": 6 },
+			"options": {
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom"
+				},
+				"tooltip": {
+					"mode": "single"
+				}
+			}
+		},
+		{
+			"type": "timeseries",
+			"title": "Memory Usage",
+			"targets": [
+				{
+					"expr": "process_resident_memory_bytes",
+					"legendFormat": "Resident Memory",
+					"refId": "D",
+					"instant": true,
+					"interval": "5s"
+				},
+				{
+					"expr": "process_virtual_memory_bytes",
+					"legendFormat": "Virtual Memory",
+					"refId": "E",
+					"instant": true,
+					"interval": "5s"
+				},
+				{
+					"expr": "process_heap_bytes",
+					"legendFormat": "Heap Memory",
+					"refId": "F",
+					"instant": true,
+					"interval": "5s"
+				}
+			],
+			"gridPos": { "x": 12, "y": 0, "w": 12, "h": 6 },
+			"options": {
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom"
+				},
+				"tooltip": {
+					"mode": "single"
+				}
+			}
+		},
+		{
+			"type": "timeseries",
+			"title": "Event Loop Statistics",
+			"targets": [
+				{
+					"expr": "nodejs_eventloop_lag_seconds",
+					"legendFormat": "Current Lag",
+					"refId": "G",
+					"instant": true,
+					"interval": "5s"
+				},
+				{
+					"expr": "nodejs_eventloop_lag_min_seconds",
+					"legendFormat": "Min Lag",
+					"refId": "H",
+					"instant": true,
+					"interval": "5s"
+				},
+				{
+					"expr": "nodejs_eventloop_lag_max_seconds",
+					"legendFormat": "Max Lag",
+					"refId": "I",
+					"instant": true,
+					"interval": "5s"
+				},
+				{
+					"expr": "nodejs_eventloop_lag_mean_seconds",
+					"legendFormat": "Mean Lag",
+					"refId": "J",
+					"instant": true,
+					"interval": "5s"
+				},
+				{
+					"expr": "nodejs_eventloop_lag_p99_seconds",
+					"legendFormat": "99th Percentile",
+					"refId": "K",
+					"instant": true,
+					"interval": "5s"
+				}
+			],
+			"gridPos": { "x": 0, "y": 6, "w": 12, "h": 6 },
+			"options": {
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom"
+				},
+				"tooltip": {
+					"mode": "single"
+				}
+			}
+		},
+		{
+			"type": "timeseries",
+			"title": "Resource Usage",
+			"targets": [
+				{
+					"expr": "process_open_fds",
+					"legendFormat": "Open File Descriptors",
+					"refId": "L",
+					"instant": true,
+					"interval": "5s"
+				},
+				{
+					"expr": "process_max_fds",
+					"legendFormat": "Max File Descriptors",
+					"refId": "M",
+					"instant": true,
+					"interval": "5s"
+				},
+				{
+					"expr": "nodejs_active_resources_total",
+					"legendFormat": "Active Resources",
+					"refId": "N",
+					"instant": true,
+					"interval": "5s"
+				},
+				{
+					"expr": "nodejs_active_handles_total",
+					"legendFormat": "Active Handles",
+					"refId": "O",
+					"instant": true,
+					"interval": "5s"
+				}
+			],
+			"gridPos": { "x": 12, "y": 6, "w": 12, "h": 6 },
+			"options": {
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom"
+				},
+				"tooltip": {
+					"mode": "single"
+				}
+			}
+		},
+		{
+			"type": "timeseries",
+			"title": "Garbage Collection",
+			"targets": [
+				{
+					"expr": "rate(nodejs_gc_duration_seconds_sum[1m])",
+					"legendFormat": "GC Duration Rate",
+					"refId": "P",
+					"interval": "10s"
+				}
+			],
+			"gridPos": { "x": 0, "y": 12, "w": 12, "h": 6 },
+			"options": {
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom"
+				},
+				"tooltip": {
+					"mode": "single"
+				}
+			}
+		},
+		{
+			"type": "timeseries",
+			"title": "CPU Usage",
+			"targets": [
+				{
+					"expr": "process_cpu_user_seconds_total",
+					"legendFormat": "User CPU",
 					"refId": "A"
+				},
+				{
+					"expr": "process_cpu_system_seconds_total",
+					"legendFormat": "System CPU",
+					"refId": "B"
+				},
+				{
+					"expr": "process_cpu_seconds_total",
+					"legendFormat": "Total CPU",
+					"refId": "C"
 				}
 			],
 			"gridPos": { "x": 0, "y": 0, "w": 12, "h": 6 }
 		},
 		{
 			"type": "timeseries",
-			"title": "Resident Memory (Bytes)",
+			"title": "Memory Usage",
 			"targets": [
 				{
 					"expr": "process_resident_memory_bytes",
 					"legendFormat": "Resident Memory",
-					"refId": "B"
+					"refId": "D"
+				},
+				{
+					"expr": "process_virtual_memory_bytes",
+					"legendFormat": "Virtual Memory",
+					"refId": "E"
+				},
+				{
+					"expr": "process_heap_bytes",
+					"legendFormat": "Heap Memory",
+					"refId": "F"
 				}
 			],
 			"gridPos": { "x": 12, "y": 0, "w": 12, "h": 6 }
 		},
 		{
 			"type": "timeseries",
-			"title": "Event Loop Lag",
+			"title": "Event Loop Statistics",
 			"targets": [
 				{
 					"expr": "nodejs_eventloop_lag_seconds",
-					"legendFormat": "Lag (s)",
-					"refId": "C"
+					"legendFormat": "Current Lag",
+					"refId": "G"
+				},
+				{
+					"expr": "nodejs_eventloop_lag_min_seconds",
+					"legendFormat": "Min Lag",
+					"refId": "H"
+				},
+				{
+					"expr": "nodejs_eventloop_lag_max_seconds",
+					"legendFormat": "Max Lag",
+					"refId": "I"
+				},
+				{
+					"expr": "nodejs_eventloop_lag_mean_seconds",
+					"legendFormat": "Mean Lag",
+					"refId": "J"
+				},
+				{
+					"expr": "nodejs_eventloop_lag_p99_seconds",
+					"legendFormat": "99th Percentile",
+					"refId": "K"
 				}
 			],
 			"gridPos": { "x": 0, "y": 6, "w": 12, "h": 6 }
 		},
 		{
 			"type": "timeseries",
-			"title": "Heap Usage",
+			"title": "Resource Usage",
 			"targets": [
 				{
-					"expr": "nodejs_heap_size_used_bytes",
-					"legendFormat": "Heap Used",
-					"refId": "D"
+					"expr": "process_open_fds",
+					"legendFormat": "Open File Descriptors",
+					"refId": "L"
 				},
 				{
-					"expr": "nodejs_heap_size_total_bytes",
-					"legendFormat": "Heap Total",
-					"refId": "E"
+					"expr": "process_max_fds",
+					"legendFormat": "Max File Descriptors",
+					"refId": "M"
+				},
+				{
+					"expr": "nodejs_active_resources_total",
+					"legendFormat": "Active Resources",
+					"refId": "N"
+				},
+				{
+					"expr": "nodejs_active_handles_total",
+					"legendFormat": "Active Handles",
+					"refId": "O"
 				}
 			],
 			"gridPos": { "x": 12, "y": 6, "w": 12, "h": 6 }
 		},
 		{
 			"type": "timeseries",
-			"title": "Garbage Collection Duration",
+			"title": "Garbage Collection",
 			"targets": [
 				{
 					"expr": "rate(nodejs_gc_duration_seconds_sum[1m])",
 					"legendFormat": "GC Duration Rate",
-					"refId": "F"
+					"refId": "P"
 				}
 			],
 			"gridPos": { "x": 0, "y": 12, "w": 12, "h": 6 }
-		},
-		{
-			"type": "timeseries",
-			"title": "HTTP Request Duration (Histogram Average)",
-			"targets": [
-				{
-					"expr": "rate(http_request_duration_second_sum[1m]) / rate(http_request_duration_second_count[1m])",
-					"legendFormat": "Avg Duration",
-					"refId": "G"
-				}
-			],
-			"gridPos": { "x": 12, "y": 12, "w": 12, "h": 6 }
-		},
-		{
-			"title": "HTTP Request Duration Scatter",
-			"type": "scatter",
-			"gridPos": {
-				"h": 8,
-				"w": 12,
-				"x": 0,
-				"y": 0
-			},
-			"datasource": "Prometheus",
-			"targets": [
-				{
-					"expr": "histogram_quantile(0.95, sum(rate(http_request_duration_second_bucket[5m])) by (le, method, route))",
-					"legendFormat": "{{method}} {{route}}",
-					"refId": "A"
-				}
-			],
-			"xaxis": {
-				"mode": "time"
-			},
-			"yaxis": {
-				"format": "s",
-				"label": "Duration (seconds)"
-			},
-			"refresh": "5s"
-		},
-		{
-			"title": "HTTP Request Distribution (Pie)",
-			"type": "piechart",
-			"gridPos": {
-				"h": 8,
-				"w": 12,
-				"x": 12,
-				"y": 0
-			},
-			"datasource": "Prometheus",
-			"targets": [
-				{
-					"expr": "sum(rate(http_request_duration_second_count[5m])) by (route)",
-					"legendFormat": "{{route}}",
-					"refId": "A"
-				}
-			],
-			"refresh": "5s"
 		}
 	],
 	"templating": {
