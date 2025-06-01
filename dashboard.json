@@ -1,0 +1,136 @@
+{
+	"id": null,
+	"uid": null,
+	"title": "Node.js Application Metrics",
+	"timezone": "browser",
+	"schemaVersion": 36,
+	"version": 1,
+	"refresh": "10s",
+	"panels": [
+		{
+			"type": "timeseries",
+			"title": "CPU Usage (Total)",
+			"targets": [
+				{
+					"expr": "process_cpu_seconds_total",
+					"legendFormat": "CPU Total",
+					"refId": "A"
+				}
+			],
+			"gridPos": { "x": 0, "y": 0, "w": 12, "h": 6 }
+		},
+		{
+			"type": "timeseries",
+			"title": "Resident Memory (Bytes)",
+			"targets": [
+				{
+					"expr": "process_resident_memory_bytes",
+					"legendFormat": "Resident Memory",
+					"refId": "B"
+				}
+			],
+			"gridPos": { "x": 12, "y": 0, "w": 12, "h": 6 }
+		},
+		{
+			"type": "timeseries",
+			"title": "Event Loop Lag",
+			"targets": [
+				{
+					"expr": "nodejs_eventloop_lag_seconds",
+					"legendFormat": "Lag (s)",
+					"refId": "C"
+				}
+			],
+			"gridPos": { "x": 0, "y": 6, "w": 12, "h": 6 }
+		},
+		{
+			"type": "timeseries",
+			"title": "Heap Usage",
+			"targets": [
+				{
+					"expr": "nodejs_heap_size_used_bytes",
+					"legendFormat": "Heap Used",
+					"refId": "D"
+				},
+				{
+					"expr": "nodejs_heap_size_total_bytes",
+					"legendFormat": "Heap Total",
+					"refId": "E"
+				}
+			],
+			"gridPos": { "x": 12, "y": 6, "w": 12, "h": 6 }
+		},
+		{
+			"type": "timeseries",
+			"title": "Garbage Collection Duration",
+			"targets": [
+				{
+					"expr": "rate(nodejs_gc_duration_seconds_sum[1m])",
+					"legendFormat": "GC Duration Rate",
+					"refId": "F"
+				}
+			],
+			"gridPos": { "x": 0, "y": 12, "w": 12, "h": 6 }
+		},
+		{
+			"type": "timeseries",
+			"title": "HTTP Request Duration (Histogram Average)",
+			"targets": [
+				{
+					"expr": "rate(http_request_duration_second_sum[1m]) / rate(http_request_duration_second_count[1m])",
+					"legendFormat": "Avg Duration",
+					"refId": "G"
+				}
+			],
+			"gridPos": { "x": 12, "y": 12, "w": 12, "h": 6 }
+		},
+		{
+			"title": "HTTP Request Duration Scatter",
+			"type": "scatter",
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 0,
+				"y": 0
+			},
+			"datasource": "Prometheus",
+			"targets": [
+				{
+					"expr": "histogram_quantile(0.95, sum(rate(http_request_duration_second_bucket[5m])) by (le, method, route))",
+					"legendFormat": "{{method}} {{route}}",
+					"refId": "A"
+				}
+			],
+			"xaxis": {
+				"mode": "time"
+			},
+			"yaxis": {
+				"format": "s",
+				"label": "Duration (seconds)"
+			},
+			"refresh": "5s"
+		},
+		{
+			"title": "HTTP Request Distribution (Pie)",
+			"type": "piechart",
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 12,
+				"y": 0
+			},
+			"datasource": "Prometheus",
+			"targets": [
+				{
+					"expr": "sum(rate(http_request_duration_second_count[5m])) by (route)",
+					"legendFormat": "{{route}}",
+					"refId": "A"
+				}
+			],
+			"refresh": "5s"
+		}
+	],
+	"templating": {
+		"list": []
+	}
+}

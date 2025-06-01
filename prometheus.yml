@@ -1,0 +1,10 @@
+global:
+    scrape_interval: 15s
+    evaluation_interval: 15s
+
+scrape_configs:
+    - job_name: "onlyplans"
+      scheme: https
+      static_configs:
+          - targets: ["onlyplans.onrender.com"]
+      metrics_path: "/metrics"

@@ -7,6 +7,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
+import { metricsMiddleware, register } from "./utils/metrics.js";
 
 // Route imports
 import authRoutes from "./routes/auth.js";
@@ -39,6 +40,7 @@ mongoose
 	});
 
 // Middleware
+app.use(metricsMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -51,6 +53,12 @@ app.use(
 		credentials: true,
 	})
 );
+
+// Metrics endpoint
+app.get('/metrics', async (req, res) => {
+    res.set('Content-Type', register.contentType);
+    res.end(await register.metrics());
+});
 
 // Is server healthy
 app.use("/api/health", healthRouter);
