@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 	const register = async (userData) => {
 		try {
 			const { data } = await axios.post(
-				`${baseUrl}api/auth/register`,
+				`${baseUrl}/api/auth/register`,
 				userData
 			);
 			setUser(data.user);
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
 	const login = async (credentials) => {
 		try {
 			const { data } = await axios.post(
-				`${baseUrl}api/auth/login`,
+				`${baseUrl}/api/auth/login`,
 				credentials
 			);
 			setUser(data.user);
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
 
 	const logout = async () => {
 		try {
-			await axios.get(`${baseUrl}api/auth/logout`);
+			await axios.get(`${baseUrl}/api/auth/logout`);
 			setUser(null);
 			localStorage.removeItem("token");
 			toast.success("Logged out successfully");
