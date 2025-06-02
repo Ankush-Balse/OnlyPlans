@@ -49,7 +49,7 @@ const StatisticsPage = () => {
 
 	const fetchStatistics = async () => {
 		try {
-			const { data } = await axios.get(`${baseUrl}/api/admin/statistics`);
+			const { data } = await axios.get(`/api/admin/statistics`);
 			setStats(data.data);
 		} catch (error) {
 			toast.error("Failed to fetch statistics");

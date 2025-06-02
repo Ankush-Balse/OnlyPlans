@@ -19,7 +19,7 @@ const EditEventPage = () => {
 
 	const fetchEvent = async () => {
 		try {
-			const { data } = await axios.get(`${baseUrl}/api/events/${id}`);
+			const { data } = await axios.get(`/api/events/${id}`);
 			setEvent(data.data);
 		} catch (error) {
 			toast.error("Failed to fetch event");
@@ -32,7 +32,7 @@ const EditEventPage = () => {
 	const handleSubmit = async (formData) => {
 		setSaving(true);
 		try {
-			await axios.put(`${baseUrl}/api/events/${id}`, formData, {
+			await axios.put(`/api/events/${id}`, formData, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},

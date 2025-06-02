@@ -13,15 +13,12 @@ const CreateEventPage = () => {
 	const handleSubmit = async (formData) => {
 		setLoading(true);
 		try {
-			const { data } = await axios.post(
-				`${baseUrl}/api/events`,
-				formData,
-				{
-					headers: {
-						"Content-Type": "multipart/form-data",
-					},
-				}
-			);
+			const { data } = await axios.post(`/api/events`, formData, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			});
 			toast.success("Event created successfully");
 			navigate(`/events/${data.data._id}`);
 		} catch (error) {

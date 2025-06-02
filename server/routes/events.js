@@ -95,7 +95,7 @@ router.get("/", async (req, res) => {
 								{ volunteers: req.user._id || req.user.id },
 							];
 							break;
-						case "volunteering":
+						case "managing":
 							query.volunteers = req.user._id || req.user.id;
 							break;
 					}
@@ -848,7 +848,7 @@ router.patch("/:id/status", protect, authorize("admin"), async (req, res) => {
 });
 
 // Export registrations to CSV
-router.get("/:id/export", protect, isEventVolunteer, async (req, res) => {
+router.get("/:id/export", protect, async (req, res) => {
 	try {
 		const event = await Event.findById(req.params.id).populate(
 			"registrations.user",

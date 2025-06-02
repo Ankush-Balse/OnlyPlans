@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Search, UserPlus, X, Check } from "lucide-react";
-
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
+import api from "../../utils/axios";
 
 const AssignVolunteersPage = () => {
 	const { eventId } = useParams();
@@ -18,8 +16,8 @@ const AssignVolunteersPage = () => {
 		const fetchData = async () => {
 			try {
 				const [eventRes, volunteersRes] = await Promise.all([
-					axios.get(`${baseUrl}/api/events/${eventId}`),
-					axios.get(`${baseUrl}/api/volunteers`),
+					api.get(`/api/events/${eventId}`),
+					api.get("/api/volunteers"),
 				]);
 
 				setEvent(eventRes.data.data);
@@ -51,8 +49,8 @@ const AssignVolunteersPage = () => {
 
 			// Remove volunteers that were unselected
 			for (const volunteerId of volunteersToRemove) {
-				await axios.delete(
-					`${baseUrl}/api/events/${eventId}/volunteers/${volunteerId}`
+				await api.delete(
+					`/api/events/${eventId}/volunteers/${volunteerId}`
 				);
 			}
 
@@ -62,12 +60,9 @@ const AssignVolunteersPage = () => {
 			);
 
 			for (const volunteerId of volunteersToAdd) {
-				await axios.post(
-					`${baseUrl}/api/events/${eventId}/volunteers`,
-					{
-						volunteerId,
-					}
-				);
+				await api.post(`/api/events/${eventId}/volunteers`, {
+					volunteerId,
+				});
 			}
 
 			toast.success("Volunteers updated successfully");

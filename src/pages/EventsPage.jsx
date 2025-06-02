@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Search, Calendar, Filter, X } from "lucide-react";
 import EventCard from "../components/events/EventCard.jsx";
-import axios from "axios";
+import api from "../utils/axios";
 import { useAuth } from "../context/AuthContext.jsx";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
@@ -36,28 +36,19 @@ const EventsPage = () => {
 		const fetchEvents = async () => {
 			setIsLoading(true);
 			try {
-				const response = await axios.get(`${baseUrl}/api/events`, {
-					// params: {
-					// 	search: searchQuery,
-					// 	category: selectedCategory,
-					// 	startDate: selectedDate,
-					// },
-				});
+				const response = await api.get("/api/events");
 				setEvents(response.data.data);
 				setFilteredEvents(response.data.data);
 
 				// If user is logged in, get recommended events
 				if (user?._id) {
-					const recommendedResponse = await axios.get(
-						`${baseUrl}/api/events`,
-						{
-							params: {
-								userId: user._id || user.id,
-								recommended: true,
-								limit: 3,
-							},
-						}
-					);
+					const recommendedResponse = await api.get("/api/events", {
+						params: {
+							userId: user._id || user.id,
+							recommended: true,
+							limit: 3,
+						},
+					});
 					setRecommendedEvents(recommendedResponse.data.data);
 				}
 			} catch (error) {

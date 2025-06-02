@@ -22,7 +22,7 @@ import {
 	Phone,
 	Link as LinkIcon,
 } from "lucide-react";
-import axios from "axios";
+import api from "../../utils/axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext.jsx";
 
@@ -59,16 +59,14 @@ const FormBuilderPage = () => {
 			setIsLoading(true);
 
 			try {
-				const eventResponse = await axios.get(
-					`${baseUrl}/api/events/${eventId}`
-				);
+				const eventResponse = await api.get(`/api/events/${eventId}`);
 				setEvent(eventResponse.data.data);
 
 				if (eventId !== "new") {
 					// Try to get existing form
 					try {
-						const formResponse = await axios.get(
-							`${baseUrl}/api/forms/event/${eventId}`
+						const formResponse = await api.get(
+							`/api/forms/event/${eventId}`
 						);
 						setFormTitle(formResponse.data.data.title);
 						setFormDescription(formResponse.data.data.description);
@@ -222,10 +220,10 @@ const FormBuilderPage = () => {
 
 			if (event.status === "draft") {
 				// Create new form
-				await axios.post(`${baseUrl}/api/forms`, formData);
+				await api.post(`/api/forms`, formData);
 			} else {
 				// Update existing form
-				await axios.put(`${baseUrl}/api/forms/${event._id}`, formData);
+				await api.put(`/api/forms/${event._id}`, formData);
 			}
 
 			toast.success("Form saved successfully");
@@ -237,7 +235,21 @@ const FormBuilderPage = () => {
 	};
 
 	const exportResponses = async () => {
-		window.location.href = `${baseUrl}/api/forms/${event._id}/export`;
+		const response = api.get(`/api/forms/${event._id}/export`);
+		if (!response.ok) {
+			throw new Error("Failed to export responses");
+		}
+
+		const blob = await response.blob();
+		const url = window.URL.createObjectURL(blob);
+
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = `responses-${event._id}.csv`; // or .xlsx based on your API
+		document.body.appendChild(a);
+		a.click();
+		a.remove();
+		window.URL.revokeObjectURL(url);
 		toast.success("Export started. The file will download shortly.");
 	};
 

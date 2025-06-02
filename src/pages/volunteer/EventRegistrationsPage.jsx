@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../../utils/axios";
 import { Check, X, Search, Filter } from "lucide-react";
 import { toast } from "react-hot-toast";
 
@@ -18,8 +18,8 @@ const EventRegistrationsPage = () => {
 	useEffect(() => {
 		const fetchRegistrations = async () => {
 			try {
-				const response = await axios.get(
-					`${baseUrl}/api/events/${eventId}/registrations`,
+				const response = await api.get(
+					`/api/events/${eventId}/registrations`,
 					{
 						user,
 					}
@@ -40,7 +40,7 @@ const EventRegistrationsPage = () => {
 
 	const handleStatusChange = async (registrationId, newStatus) => {
 		try {
-			await axios.put(`${baseUrl}/api/registrations/${registrationId}`, {
+			await api.put(`/api/registrations/${registrationId}`, {
 				status: newStatus,
 			});
 

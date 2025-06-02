@@ -37,7 +37,7 @@ const EventAnalyticsPage = () => {
 	const fetchAnalytics = async () => {
 		try {
 			const response = await axios.get(
-				`${baseUrl}/api/admin/analytics?timeRange=${timeRange}`
+				`/api/admin/analytics?timeRange=${timeRange}`
 			);
 			const data = response.data.data;
 

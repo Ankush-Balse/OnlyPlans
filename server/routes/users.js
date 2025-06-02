@@ -82,6 +82,7 @@ router.get("/:id", protect, async (req, res) => {
 // Update user profile
 router.put("/:id", protect, async (req, res) => {
 	try {
+		console.log(req.user);
 		if (req.user.role !== "admin" && req.user.id !== req.params.id) {
 			return res.status(403).json({
 				success: false,

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api from "../../utils/axios";
 import { toast } from "react-hot-toast";
 import {
 	Search,
@@ -17,8 +17,6 @@ import {
 } from "lucide-react";
 import { Menu } from "@headlessui/react";
 
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
-
 const EventsManagementPage = () => {
 	const [events, setEvents] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -29,7 +27,7 @@ const EventsManagementPage = () => {
 	const fetchEvents = async () => {
 		setLoading(true);
 		try {
-			const { data } = await axios.get(`${baseUrl}/api/events`, {
+			const { data } = await api.get("/api/events", {
 				params: {
 					search: searchQuery,
 					status: selectedStatus,
@@ -60,7 +58,7 @@ const EventsManagementPage = () => {
 		}
 
 		try {
-			await axios.delete(`${baseUrl}/api/events/${eventId}`);
+			await api.delete(`/api/events/${eventId}`);
 			toast.success("Event deleted successfully");
 			fetchEvents();
 		} catch (error) {
@@ -70,7 +68,7 @@ const EventsManagementPage = () => {
 
 	const handleStatusChange = async (eventId, newStatus) => {
 		try {
-			await axios.patch(`${baseUrl}/api/events/${eventId}/status`, {
+			await api.patch(`/api/events/${eventId}/status`, {
 				status: newStatus,
 			});
 			toast.success("Event status updated successfully");

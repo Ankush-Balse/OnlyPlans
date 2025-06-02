@@ -70,11 +70,9 @@ const DashboardPage = () => {
 		const fetchDashboardData = async () => {
 			setIsLoading(true);
 			try {
-				const statsResponse = await axios.get(
-					`${baseUrl}/api/admin/stats`
-				);
+				const statsResponse = await axios.get(`/api/admin/stats`);
 				const eventsResponse = await axios.get(
-					`${baseUrl}/api/admin/recent-events`
+					`/api/admin/recent-events`
 				);
 
 				setStats(statsResponse.data.data);

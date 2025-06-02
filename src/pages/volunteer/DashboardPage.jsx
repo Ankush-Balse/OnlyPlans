@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api from "../../utils/axios";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext.jsx";
 import {
@@ -34,14 +34,10 @@ const DashboardPage = () => {
 		const fetchDashboardData = async () => {
 			try {
 				const [dashboardRes, eventsRes] = await Promise.all([
-					axios.get(
-						`${baseUrl}/api/volunteers/${
-							user._id || user.id
-						}/dashboard`
-					),
-					axios.get(`${baseUrl}/api/events`, {
+					api.get(`/api/volunteers/${user._id || user.id}/dashboard`),
+					api.get(`/api/events`, {
 						params: {
-							type: "volunteering",
+							type: "managing",
 						},
 					}),
 				]);

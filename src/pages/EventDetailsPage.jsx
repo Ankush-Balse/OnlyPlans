@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import toast from "react-hot-toast";
-import axios from "axios";
+import api from "../utils/axios";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -33,17 +33,21 @@ const EventDetailsPage = () => {
 		const fetchEvent = async () => {
 			setIsLoading(true);
 			try {
-				const response = await axios.get(`${baseUrl}/api/events/${id}`);
+				const response = await api.get(`/api/events/${id}`);
 				setEvent(response.data.data);
 				if (response.data.data.status === "published") {
-					const formResponse = await axios.get(
-						`${baseUrl}/api/forms/event/${id}`
+					console.log("published");
+					const formResponse = await api.get(
+						`/api/forms/event/${id}`
 					);
+					console.log(formResponse);
 					setEvent({
 						...event,
 						registrationForm: formResponse.data.data,
 					});
 				}
+
+				console.log(response.data);
 
 				// Check if user is already registered
 				if (user && response.data.data.registrations) {
@@ -78,8 +82,8 @@ const EventDetailsPage = () => {
 		setIsRegistering(true);
 
 		try {
-			const response = await axios.post(
-				`${baseUrl}/api/events/${id}/register`,
+			const response = await api.post(
+				`/api/events/${id}/register`,
 				{ formData },
 				{
 					headers: {
